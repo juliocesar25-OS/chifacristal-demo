@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chifa Cristal</title>
+<meta name="description" content="Carta principal, reservas y opiniones de Chifa Cristal.">
+<meta name="theme-color" content="#120808">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   CHIFA CRISTAL – Landing NFC (modelo portada + carta + reservas + opinión)
+   Para editar datos: bloque CONFIGURACIÓN y bloque CARTA en el <script>.
+   ========================================================= */
+:root{
+  --night:#120808; --red:#c8182a; --red-d:#9e0f1e; --gold:#c9a24e; --gold-l:#e6c987;
+  --paper:#faf6f0; --paper2:#f2ebe0; --ink:#1d1414; --ink2:#6b5a52; --line:#e3d8c8;
+  --green:#1f9d55;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{font-family:Jost,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--night);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+.vista{display:none;min-height:100vh}
+.vista.activa{display:block}
+
+/* ---------- PORTADA ---------- */
+#inicio{position:relative;color:#fff;display:none;place-items:center;text-align:center;padding:48px 16px;overflow:hidden}
+#inicio.activa{display:grid}
+#inicio .celosia{z-index:0}
+.fondo.foto ~ .celosia{display:none}
+.fondo{position:absolute;inset:0;background:
+  radial-gradient(90% 60% at 50% 30%,rgba(200,24,42,.45),transparent 70%),
+  linear-gradient(180deg,#2a0d0f 0%,#120808 100%);}
+.fondo.foto{background-size:cover;background-position:center 70%;filter:blur(2px);transform:scale(1.04)}
+.fondo.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,8,8,.78) 0%,rgba(18,8,8,.55) 45%,rgba(18,8,8,.8) 100%)}
+.celosia{position:absolute;inset:0;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23e6c987' stroke-width='2'%3E%3Cpath d='M0 28h12V12h32v32H28V28'/%3E%3Cpath d='M56 28H44'/%3E%3C/g%3E%3C/svg%3E")}
+.portada{position:relative;z-index:1;width:100%;max-width:380px}
+.logo small{display:block;font-family:"Playfair Display",serif;letter-spacing:.5em;font-size:14px;color:var(--gold-l);margin-left:.5em}
+.logo h1{font-family:"Playfair Display",serif;font-size:58px;line-height:1;color:var(--red);text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.logo .sello{display:inline-block;margin-top:10px;width:34px;height:34px;border:2px solid var(--gold);outline:2px solid var(--red);outline-offset:2px}
+.pildoras{margin:40px 0 36px;display:grid;gap:14px}
+.pildora{display:block;width:100%;padding:15px 20px;border-radius:999px;border:none;background:#f6f3ef;color:#2b2222;font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;box-shadow:0 2px 10px rgba(0,0,0,.25);transition:transform .1s,background .2s}
+.pildora:hover{background:#fff}
+.pildora:active{transform:scale(.98)}
+.siguenos{font-weight:600;font-size:18px;margin-bottom:14px}
+.redes{display:flex;justify-content:center;gap:18px}
+.redes a{width:40px;height:40px;display:grid;place-items:center}
+.redes svg{width:34px;height:34px;fill:#fff}
+.redes a.oculto{display:none}
+.pie-local{margin-top:28px;font-size:13px;color:#d9c9bd;opacity:.85}
+
+/* ---------- BARRA SUPERIOR (vistas internas) ---------- */
+.barra{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;height:56px;padding:0 16px;background:var(--red);color:#fff}
+.barra button{background:none;border:none;color:#fff;display:grid;place-items:center;width:32px;height:32px;margin-left:-6px}
+.barra svg{width:22px;height:22px;fill:currentColor}
+.barra h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.interna{background:var(--paper);min-height:100vh}
+
+/* ---------- CARTA ---------- */
+.carta{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:230px 1fr;gap:28px;padding:20px 16px 60px}
+.carta>div{min-width:0}
+.categorias{position:sticky;top:76px;align-self:start;background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px 10px;max-height:calc(100vh - 96px);overflow:auto}
+.categorias h3{font-size:18px;font-weight:500;padding:4px 8px 12px}
+.cat{display:block;width:100%;text-align:left;padding:9px 10px;border:none;background:none;border-radius:999px 999px 999px 999px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#3a302c}
+.cat.on{background:var(--paper2);box-shadow:inset 3px 0 0 var(--red);font-weight:600}
+.buscador{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:6px;background:#fff;font:inherit;font-size:16px;margin-bottom:8px}
+.seccion{padding:22px 0 8px;scroll-margin-top:72px}
+.seccion>h4{display:inline-block;font-size:22px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);padding-bottom:6px;border-bottom:2px solid var(--red);margin-bottom:6px}
+.seccion>h4 span{display:block;font-size:12px;letter-spacing:.3em;color:var(--gold);font-weight:500}
+.seccion .nota{font-size:13.5px;color:var(--ink2);margin:6px 0 4px}
+.platos{display:grid;grid-template-columns:1fr 1fr;column-gap:40px}
+.plato{padding:14px 0;border-bottom:1px solid var(--line)}
+.plato b{display:block;font-size:14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.plato p{font-size:12.5px;color:var(--ink2);text-transform:uppercase;letter-spacing:.03em;margin-top:3px;line-height:1.4}
+.plato .precio{font-size:13.5px;font-weight:600;color:var(--red-d);margin-top:4px;font-variant-numeric:tabular-nums}
+.plato .precio i{font-style:normal;color:var(--ink2);font-weight:400;font-size:12px;margin-right:2px}
+.plato .precio .sep{color:var(--line);margin:0 6px}
+.etq{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:2px;font-weight:600}
+.etq.pic{background:#fde4e4;color:#a1121f}
+.etq.veg{background:#e3f3e7;color:#1d6b36}
+.legal{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);margin-top:10px}
+.vacio{padding:30px 0;color:var(--ink2)}
+.aviso{font-size:12.5px;color:var(--ink2);margin-top:28px;border-top:1px solid var(--line);padding-top:14px}
+
+.estrellas{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+.estrella{display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px 12px 16px;border-radius:14px;background:radial-gradient(80% 70% at 50% 38%,#fff 0%,var(--paper2) 100%);border:1px solid var(--line);transition:transform .15s}
+.estrella:hover{transform:translateY(-2px)}
+.estrella img{width:100%;aspect-ratio:4/3;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(60,20,10,.28))}
+.estrella b{margin-top:10px;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;line-height:1.3}
+.estrella span{margin-top:4px;font-size:13px;color:var(--red-d);font-weight:600}
+.estrella span i{font-style:normal;color:var(--ink2);font-weight:400;font-size:11px}
+.estrella span .sep{color:var(--line);margin:0 4px}
+.estrella .txt>b,.estrella .txt>span{display:block}
+.estrellas.uno{grid-template-columns:1fr}
+.estrellas.uno .estrella{flex-direction:row;gap:28px;text-align:left;padding:22px 28px}
+.estrellas.uno .estrella img{width:58%;max-width:440px}
+.estrellas.uno .estrella b{font-size:18px;margin-top:0}
+.estrellas.uno .estrella span{font-size:15px;margin-top:8px}
+.estrellas.uno .estrella .txt{display:flex;flex-direction:column}
+.plato.confoto{display:grid;grid-template-columns:1fr 92px;gap:12px;align-items:center}
+.plato.confoto img{width:92px;height:72px;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(60,20,10,.25))}
+.plato{transition:background .4s}
+.plato.brillo{background:#fff3d6}
+
+/* ---------- FORMULARIOS (reservas / opinión) ---------- */
+.panel{max-width:520px;margin:0 auto;padding:24px 16px 60px}
+.panel .intro{font-family:"Playfair Display",serif;font-size:28px;line-height:1.15;margin-bottom:6px}
+.panel .bajada{color:var(--ink2);font-size:15px;margin-bottom:20px}
+.campo{display:block;margin-bottom:14px}
+.campo span{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
+.campo input,.campo select,.campo textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;font-size:16px;color:var(--ink)}
+.campo textarea{min-height:90px;resize:vertical}
+.fila{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.accion{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border:none;border-radius:999px;background:var(--green);color:#fff;font-size:15px;font-weight:600;letter-spacing:.04em}
+.accion svg{width:20px;height:20px;fill:currentColor}
+.accion.sec{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.accion.rojo{background:var(--red)}
+.ayuda{font-size:12.5px;color:var(--ink2);margin-top:10px;text-align:center}
+.tarjeta{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.tarjeta h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.tarjeta p{font-size:14.5px;color:var(--ink2);margin-bottom:14px}
+.caras{display:flex;justify-content:center;gap:16px;margin:6px 0 16px}
+.cara{width:64px;height:64px;border-radius:50%;border:3px solid transparent;display:grid;place-items:center;background:none;padding:0;transition:transform .1s,border-color .2s}
+.cara svg{width:58px;height:58px}
+.cara.on{border-color:var(--ink);transform:scale(1.06)}
+.cara span{position:absolute;left:-9999px}
+
+/* ---------- SELECTOR DE LOCAL ---------- */
+dialog{margin:auto;border:none;border-radius:18px;background:var(--paper);color:var(--ink);width:min(92vw,400px);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.dlg-t{font-family:"Playfair Display",serif;font-size:22px;margin-bottom:12px}
+.opc{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:15px}
+.opc small{display:block;color:var(--ink2);font-size:13px}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:820px){
+  .carta{grid-template-columns:1fr;gap:0;padding-top:0}
+  .categorias{position:sticky;top:56px;z-index:10;display:flex;gap:8px;overflow-x:auto;max-height:none;border:none;border-bottom:1px solid var(--line);border-radius:0;margin:0 -16px;padding:10px 16px;background:var(--paper);scrollbar-width:none}
+  .categorias::-webkit-scrollbar{display:none}
+  .categorias h3{display:none}
+  .cat{flex:none;width:auto;border:1px solid var(--line);background:#fff;padding:8px 14px;font-size:12px}
+  .cat.on{background:var(--ink);color:#fff;box-shadow:none;border-color:var(--ink)}
+  .buscador{margin-top:14px}
+  .platos{grid-template-columns:1fr}
+  .estrellas{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:62%;overflow-x:auto;margin:12px -16px 0;padding:0 16px 6px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .estrellas::-webkit-scrollbar{display:none}
+  .estrella{scroll-snap-align:start}
+  .estrellas.uno{display:block;margin:12px 0 0;padding:0;overflow:visible}
+  .estrellas.uno .estrella{flex-direction:column;text-align:center;padding:18px 14px}
+  .estrellas.uno .estrella img{width:100%;max-width:none}
+  .seccion{scroll-margin-top:118px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= PORTADA ================= -->
+<section id="inicio" class="vista" aria-label="Inicio">
+  <div class="fondo" id="fondo"></div><div class="celosia"></div>
+  <div class="portada">
+    <div class="logo"><small>CHIFA</small><h1>Cristal</h1></div>
+    <nav class="pildoras">
+      <a class="pildora" href="#carta">Carta principal</a>
+      <a class="pildora" href="#reservas">Reservas</a>
+      <a class="pildora" href="#opinion">¿Cómo la pasaste hoy?</a>
+    </nav>
+    <p class="siguenos">Síguenos</p>
+    <div class="redes">
+      <a id="rFb" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-1.6 19.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.3v7A10 10 0 0 0 12 2z"/></svg></a>
+      <a id="rIg" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm5-3.3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg></a>
+      <a id="rWa" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.6 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1a17 17 0 0 1-1.7-.6 13.3 13.3 0 0 1-5.1-4.5c-.4-.5-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l.9 2.2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.2 1.4 2.5 1.5.3.2.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 1c.3.2.5.2.6.4.1.1.1.8-.1 1.4z"/></svg></a>
+      <a id="rTk" class="oculto" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 2h-3.3v13.4a2.9 2.9 0 1 1-2-2.8V9.2a6.3 6.3 0 1 0 5.3 6.2V8.6a8 8 0 0 0 4.4 1.4V6.7a4.6 4.6 0 0 1-4.4-4.7z"/></svg></a>
+    </div>
+    <p class="pie-local"><span id="pieLocal">Local Chorrillos</span></p>
+  </div>
+</section>
+
+<!-- ================= CARTA ================= -->
+<section id="carta" class="vista interna" aria-label="Carta principal">
+  <header class="barra"><button type="button" data-volver aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M15.4 4.6 14 3.2 5.2 12l8.8 8.8 1.4-1.4L8 12z"/></svg></button><h2>Carta principal</h2></header>
+  <div class="carta">
+    <aside class="categorias" id="categorias" aria-label="Categorías"><h3>Categorías</h3></aside>
+    <div>
+      <input class="buscador" id="buscar" type="search" placeholder="Buscar: chaufa, wantan, tipakay…" aria-label="Buscar en la carta">
+      <div id="lista"></div>
+      <p class="aviso">Precios en soles (S/), incluyen impuestos. Los envases para llevar tienen costo adicional. Si tienes alguna alergia o restricción alimentaria, avísanos antes de pedir.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESERVAS ================= -->
+<section id="reservas" class="vista interna" aria-label="Reservas">
+  <header class="barra"><button type="button" data-volver aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M15.4 4.6 14 3.2 5.2 12l8.8 8.8 1.4-1.4L8 12z"/></svg></button><h2>Reservas</h2></header>
+  <form class="panel" id="formReserva">
+    <p class="intro">Reserva tu mesa</p>
+    <p class="bajada">Completa los datos y envíanos la solicitud por WhatsApp. Te confirmaremos la disponibilidad.</p>
+    <label class="campo"><span>Local</span><select id="rLocal" required></select></label>
+    <div class="fila">
+      <label class="campo"><span>Fecha</span><input id="rFecha" type="date" required></label>
+      <label class="campo"><span>Hora</span><input id="rHora" type="time" min="11:00" max="22:30" required></label>
+    </div>
+    <div class="fila">
+      <label class="campo"><span>Personas</span><select id="rPers"></select></label>
+      <label class="campo"><span>Ocasión</span><select id="rOcasion"><option>Sin ocasión especial</option><option>Cumpleaños</option><option>Reunión familiar</option><option>Reunión de trabajo</option><option>Banquete</option></select></label>
+    </div>
+    <label class="campo"><span>Nombre</span><input id="rNombre" autocomplete="name" required></label>
+    <label class="campo"><span>Comentarios (opcional)</span><textarea id="rComent" placeholder="Silla para bebé, zona tranquila, banquete para 6…"></textarea></label>
+    <button class="accion" type="submit" id="rEnviar"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg><span>Enviar solicitud por WhatsApp</span></button>
+    <p class="ayuda" id="rAyuda">La reserva queda confirmada cuando el local te responde.</p>
+  </form>
+</section>
+
+<!-- ================= ¿CÓMO LA PASASTE HOY? ================= -->
+<section id="opinion" class="vista interna" aria-label="Opinión">
+  <header class="barra"><button type="button" data-volver aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M15.4 4.6 14 3.2 5.2 12l8.8 8.8 1.4-1.4L8 12z"/></svg></button><h2>¿Cómo la pasaste hoy?</h2></header>
+  <div class="panel">
+    <p class="intro">Cuéntanos tu experiencia</p>
+    <p class="bajada">Tu opinión, buena o mala, nos ayuda a mejorar. Elige cómo quieres compartirla.</p>
+
+    <div class="tarjeta">
+      <h3>Opinión pública en Google</h3>
+      <p>Comparte tu experiencia con otros clientes. Necesitas una cuenta de Google.</p>
+      <a class="accion rojo" id="oGoogle" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 17.3l6.2 3.7-1.6-7 5.4-4.7-7.1-.6L12 2 9.1 8.7 2 9.3l5.4 4.7-1.6 7z"/></svg><span>Escribir en Google</span></a>
+    </div>
+
+    <form class="tarjeta" id="formOpinion">
+      <h3>Mensaje privado al local</h3>
+      <p>¿Cómo te atendimos hoy? Tu mensaje llega directo al encargado.</p>
+      <div class="caras" role="radiogroup" aria-label="Calificación">
+        <button type="button" class="cara" data-v="Mala" role="radio" aria-checked="false"><svg viewBox="0 0 58 58"><circle cx="29" cy="29" r="29" fill="#e0262b"/><circle cx="20" cy="23" r="4" fill="#3a0d0d"/><circle cx="38" cy="23" r="4" fill="#3a0d0d"/><path d="M17 43c6-8 18-8 24 0" stroke="#3a0d0d" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg><span>Mala</span></button>
+        <button type="button" class="cara" data-v="Regular" role="radio" aria-checked="false"><svg viewBox="0 0 58 58"><circle cx="29" cy="29" r="29" fill="#f2c623"/><circle cx="20" cy="23" r="4" fill="#3a2a0d"/><circle cx="38" cy="23" r="4" fill="#3a2a0d"/><path d="M18 39h22" stroke="#3a2a0d" stroke-width="3.5" stroke-linecap="round"/></svg><span>Regular</span></button>
+        <button type="button" class="cara" data-v="Buena" role="radio" aria-checked="false"><svg viewBox="0 0 58 58"><circle cx="29" cy="29" r="29" fill="#1f9d55"/><circle cx="20" cy="23" r="4" fill="#0d2a18"/><circle cx="38" cy="23" r="4" fill="#0d2a18"/><path d="M17 35c6 8 18 8 24 0" stroke="#0d2a18" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg><span>Buena</span></button>
+      </div>
+      <label class="campo"><span>Comentario (opcional)</span><textarea id="oComent" placeholder="¿Qué nos recomiendas mejorar o qué te gustó?"></textarea></label>
+      <button class="accion sec" type="submit">Enviar por WhatsApp</button>
+      <p class="ayuda" id="oAyuda"></p>
+    </form>
+  </div>
+</section>
+
+
+<script>
+/* =========================================================
+   CONFIGURACIÓN – edita solo esta parte
+   - whatsapp: número con 51 delante, SOLO si el local confirmó que es WhatsApp.
+   - telefono: número de delivery impreso en la carta.
+   - maps: enlace del botón "Compartir" de la ficha de Google del local.
+   - resena: enlace OFICIAL de "Pedir reseñas" que envía el dueño.
+   - fotoPortada: foto de fondo del inicio. Vacío = fondo de color.
+   - FOTOS (debajo de la carta): nombre exacto del plato → archivo en la carpeta img. Puedes añadir más.
+   ========================================================= */
+var CONFIG = {
+  instagram: "https://www.instagram.com/chifacristaloficial",
+  facebook:  "https://www.facebook.com/share/19Z3fVdhaw/",
+  tiktok:    "",                 // pendiente: confirmar usuario de TikTok
+  fotoPortada: "img/portada.webp",
+  localFijo: "chorrillos",        // por ahora la landing atiende solo este local
+  locales: {
+    jesusmaria: { nombre:"Jesús María", direccion:"Jr. Pumacahua 1300, Jesús María", telefono:"980440814", whatsapp:"", maps:"", resena:"" },
+    miraflores: { nombre:"Miraflores",  direccion:"Calle Berlín 453, Miraflores",     telefono:"991890842", whatsapp:"", maps:"", resena:"" },
+    chorrillos: { nombre:"Chorrillos",  direccion:"Av. Alameda Sur 685, Chorrillos", telefono:"900999000", whatsapp:"51900999000",
+                  maps:"https://maps.app.goo.gl/WhznnFZaN9VnicYR7", /* CONFIRMAR que es el local de Chorrillos */ resena:"" },
+    salamanca:  { nombre:"Salamanca",   direccion:"Psje. Julio C. Tello 102, Salamanca", telefono:"998000434", whatsapp:"", maps:"", resena:"" },
+    santaclara: { nombre:"Santa Clara", direccion:"Av. Nicolás de Piérola 390 A, Santa Clara", telefono:"", /* ilegible: confirmar */ whatsapp:"", maps:"", resena:"" }
+  }
+};
+
+/* =========================================================
+   CARTA – transcrita de la carta impresa (oct. 2026).
+   null = precio por confirmar (se muestra "Consultar").
+   ========================================================= */
+var P = ["Personal","Familiar"];
+var CARTA = [
+ {id:"combos", nombre:"Combos personales", cols:["Precio"], nota:"Incluyen entrada: sopa, wantan frito o enrollado primavera.", items:[
+  ["C1 – Chijaukay + Tipakay + Chaufa",28],["C2 – Enrollado + Tipakay + Chaufa",28],["C3 – Enrollado + Pollo c/ piña + Chaufa",28],
+  ["C4 – Pollo con verduras + Tipakay + Chaufa",28],["C5 – Pollo con piña y durazno + Chijaukay + Chaufa",28],["C6 – Chancho con verduras + Tipakay + Chaufa",28],
+  ["C7 – Lomo saltado de carne + Chijaukay + Chaufa",28],["C8 – Tallarín especial + Tipakay",28],["C9 – Tallarín especial + Chijaukay",28],
+  ["C10 – Tallarín especial + Enrollado",28],["C11 – Chaufa especial + Tipakay",28],["C12 – Chaufa especial + Chijaukay",28],
+  ["C13 – Chaufa especial + Enrollado",28],["C14 – Chaufa especial + Chicharrón",28],["C15 – Chaufa especial + Alitas fritas",28]]},
+ {id:"menu", nombre:"Menú Cristal", cols:["Precio"], items:[
+  ["M1 – Chaufa con pollo",14],["M2 – Tallarín con pollo y verduras",15],["M3 – Tallarín con pollo en trozos y verduras",19],["M4 – Combinado de pollo",18],
+  ["M5 – Pollo con verduras c/ chaufa",19],["M6 – Pollo con frijolito c/ chaufa",19],["M7 – Pollo con piña c/ chaufa",19],["M8 – Tipakay c/ chaufa",19],
+  ["M9 – Chijaukay c/ chaufa",19],["M10 – Pollo enrollado c/ chaufa",19],["M11 – Pollo saltado c/ chaufa",19],["M12 – Pollo en trozos con tausi y verdura c/ chaufa",20],
+  ["M13 – Pollo con piña y durazno c/ chaufa",20],["M14 – Chicharrón de pollo c/ chaufa",20],["M15 – Chancho con verduras c/ chaufa",20],["M16 – Chancho al ajo c/ chaufa",20],
+  ["M17 – Chancho con frijolito c/ chaufa",20],["M18 – Chancho con piña c/ chaufa",19],["M19 – Carne con verduras c/ chaufa",19],["M20 – Carne con frijolito c/ chaufa",19],
+  ["M21 – Carne con tausi c/ chaufa",19],["M22 – Pollo en trozos con verduras c/ chaufa",19],["M23 – Carne con taufu frito c/ arroz blanco",19],["M24 – Lomo saltado de carne c/ chaufa",20],
+  ["M25 – Langostinos con verduras c/ chaufa",20],["M26 – Langostino con frijolito c/ chaufa",18],["M27 – Tortilla con verduras c/ chaufa",19],["M28 – Tortilla de pollo con verduras c/ chaufa",20],
+  ["M29 – Tortilla de chancho con verduras c/ chaufa",20],["M30 – Tortilla de langostinos y verdura c/ chaufa",22],["M31 – Kamlu wantan c/ chaufa",22],["M32 – Taypa c/ chaufa",16],
+  ["M33 – Aeropuerto de pollo",21],["M34 – Pescado con verduras c/ chaufa",18],["M35 – Verduras salteadas con champiñones c/ arroz blanco",16],["M36 – Alitas fritas c/ chaufa",22],
+  ["M37 – Alitas a la BBQ c/ chaufa",22],["M38 – Carne a la pimienta c/ chaufa",21],["M39 – Alitas y papas fritas c/ chaufa",23],["M40 – Chicharrón de pollo y papas fritas c/ chaufa",null]]},
+ {id:"banquetes", nombre:"Banquetes", cols:["Precio"], items:[
+  ["Banquete 2 personas",63,"Wantan frito (6 und.), pollo chijaukay con salsa de ostión, 2 tazas de chaufa de pollo, gaseosa 1/2 L"],
+  ["Banquete 4 a 5 personas",189,"Wantan frito (12 und.), pollo con verduras y champiñones, pollo tipakay, tallarín con pollo en trozos y verduras, chaufa especial familiar, gaseosa 1.5 L"],
+  ["Banquete 6 a 8 personas",308,"Enrollado primavera (12 und.), pollo en trozos con verduras, pollo enrollado con salsa de ostión, chancho al ajo, kamlu wantan, tallarín con carne y verduras familiar, chaufa de pollo y chancho familiar, 2 gaseosas 1.5 L"]]},
+ {id:"especial", nombre:"Plato especial", cols:["Precio"], items:[
+  ["Taypa especial",41],["Pescado frito con verduras",34],["Taufu frito con carne (picante)",36],["Kamlu wantan personal",34],
+  ["Tortilla c/ langostino y verduras",26],["Tortilla c/ pollo y verduras",24],["Langostino arrebozado (picante)",42],["Combinado especial",39],
+  ["Combinado de pollo",36],["Pescado al vapor c/ yuyo chino",38]]},
+ {id:"pollo", nombre:"Pollo", cols:P, items:[
+  ["Pollo chijaukay (salado)",32,62],["Pollo tipakay (dulce)",32,62],["Pollo limonkay",32,62],["Pollo enrollado con verduras",32,62],
+  ["Pollo enrollado con salsa de ostión",32,62],["Pollo con verduras",32,62],["Pollo c/ champiñón y verduras",36,69],["Pollo c/ hongo chino y verduras",39,75],
+  ["Pollo con frijolito chino",32,62],["Pollo en trozo con tausi y verduras",34,66],["Pollo en trozo con huevito y verduras",34,66],["Pollo en trozo con piña y duraznos",36,69],
+  ["Pollo 5 sabores (dulce)",34,66],["Pollo saltado (criollo)",32,62],["Pollo en trozos c/ verduras",34,66],["Pollo con almendras chinas y verduras",39,75],
+  ["Pollo con fideos chinos y verduras",34,66]]},
+ {id:"chancho", nombre:"Chancho asado", cols:P, items:[
+  ["Chancho c/ nabo encurtido",32,62],["Chancho al ajo",32,62],["Chancho c/ frijolito chino",32,62],["Chancho c/ champiñón y verduras",32,62],["Chancho c/ tamarindo",32,62]]},
+ {id:"carne", nombre:"Carne", cols:P, items:[
+  ["Carne c/ champiñón y verduras",36,69],["Carne c/ tausi y verduras",36,69],["Carne c/ frijolito chino",36,69],["Lomo saltado",36,69]]},
+ {id:"langostino", nombre:"Langostino", cols:P, items:[
+  ["Langostino al ajo",34,66],["Langostino c/ champiñones y verduras",37,72],["Langostinos c/ frijolito chino",34,66],["Langostino c/ tausi y verduras",34,66]]},
+ {id:"arroz", nombre:"Arroz", cols:["Taza","Personal","Familiar"], items:[
+  ["Chaufa \"Cristal\" especial",14,26,72],["Chaufa especial",null,24,66],["Chaufa de langostino",13,22,60],["Chaufa pollo y chancho",12,22,60],
+  ["Chaufa de chancho",12,20,54],["Chaufa de pollo",12,20,54],["Chaufa de carne",12,20,54],["Aeropuerto de pollo",13,22,60],
+  ["Aeropuerto especial",14,26,72],["Porción de arroz blanco",5,"",""]]},
+ {id:"tallarin", nombre:"Tallarín", cols:P, items:[
+  ["Tallarín taypa especial",43,84],["Tallarín samsi especial",39,75],["Tallarín c/ pollo y verduras",34,64],["Tallarín c/ pollo en trozos y verduras",36,69],
+  ["Tallarín c/ chancho asado y verduras",36,69],["Tallarín c/ langostino y verduras",39,75],["Tallarín c/ carne y verduras",36,69]]},
+ {id:"plancha", nombre:"A la plancha", cols:["Precio"], items:[
+  ["Taypa especial",44],["Carne c/ taufu frito y verduras",39],["Lomo saltado",37],["Langostinos al ajo",39]]},
+ {id:"veg", nombre:"Vegetariano", cols:P, items:[
+  ["Arroz chaufa c/ verduras",22,59],["Tallarín c/ champiñones y verduras",32,62],["Verduras con champiñones",30,58],["Taufu frito c/ verduras",30,58]]},
+ {id:"sopas", nombre:"Sopas", cols:P, items:[
+  ["Sopa \"Cristal\" especial",20,62,"Pollo, chancho, carne, langostinos, yuyo chino, hongo chino, champiñones y huevito de codorniz"],
+  ["Sopa wantan especial",20,54,"Pollo, chancho, carne, langostinos, champiñones y huevito de codorniz"],
+  ["Sopa wantan de pollo",18,50,"Pequeños trozos de pollo sancochado con col"],
+  ["Sopa fuchifu",null,null,"Verduras y pollo picado en trozos pequeños con huevo reventado"],
+  ["Sopa de pollo c/ kion y verduras",17,45,"Pequeños trozos de pollo con kion y col"],
+  ["Sopa pacpow",20,62],["Sopa de pollo c/ fideos chinos",17,45]]},
+ {id:"piqueos", nombre:"Piqueos", cols:["Precio"], items:[
+  ["Wantan frito (1 docena)",15,"12 und. de wantanes crocantes rellenos de pollo"],["Wantan frito (1/2 docena)",8,"6 und. rellenos de pollo"],
+  ["Nabo encurtido (porción)",20,"Láminas de nabo agridulce"],["Nabo encurtido (1/2 porción)",10],
+  ["Alitas fritas (8 und.)",17,"Acompañadas de zumo de limón"],["Enrollado primavera (6 und.)",16,"Rellenos de verduras con chancho"],
+  ["Chicharrón de pollo",21,"6 trozos de pollo frito con zumo de limón"],["Siumay (6 und.)",17],["Min pao (1 und.)",null]]},
+ {id:"bebidas", nombre:"Bebidas", cols:["Precio"], legal:true, items:[
+  ["Gaseosa 1/2 L (Inca Kola, Coca Cola)",5],["Gaseosa 1.5 L (Inca Kola, Coca Cola)",12],["Gaseosa 2.5 L (Inca Kola, Coca Cola)",20],
+  ["Agua San Luis 1/2 L",4],["Jarra 1 L (chicha, maracuyá, limonada)",18],["Vaso de chicha, limonada o maracuyá",6],
+  ["Cerveza Cusqueña Dorada pequeña",9],["Cerveza Pilsen pequeña",8],["Tetera de té jazmín",15],["Taza (anís, té, té jazmín, manzanilla)",4]]},
+ {id:"aperitivos", nombre:"Aperitivos", cols:["Precio"], legal:true, items:[
+  ["Algarrobina",19],["Dikiri de durazno",19],["Pisco sour",19],["Maracuyá sour",19],["Chilcano clásico",19],
+  ["Chilcano de maracuyá",19],["Tacama Rosé (vino)",48],["Jarra de sangría",32]]}
+];
+
+
+/* FOTOS DE PLATOS – el nombre debe ser idéntico al de la CARTA */
+var FOTOS = {
+  "Aeropuerto de pollo": "img/aeropuerto.webp"
+};
+
+/* =========================================================
+   LÓGICA – no necesitas editar debajo de esta línea
+   ========================================================= */
+(function(){
+  function $(id){ return document.getElementById(id); }
+  function guardar(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function leer(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function norm(s){ return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+  function fmtTel(t){ return t.replace(/(\d{3})(\d{3})(\d{3})/,"$1 $2 $3"); }
+
+  var q = new URLSearchParams(location.search);
+  var local = CONFIG.localFijo || q.get("local") || leer("cc_local");
+  if (!CONFIG.locales[local]) local = Object.keys(CONFIG.locales)[0];
+  if (q.get("local") && CONFIG.locales[q.get("local")]) guardar("cc_local", local);
+  var mesa = q.get("m") || "";
+  function L(){ return CONFIG.locales[local]; }
+  function mapsDe(l){ return l.maps || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Chifa Cristal " + l.direccion)); }
+  function waDe(l){ return l.whatsapp || ""; }
+
+  /* --- Navegación entre vistas --- */
+  var vistas = ["inicio","carta","reservas","opinion"];
+  function mostrar(){
+    var v = (location.hash || "#inicio").slice(1);
+    if (vistas.indexOf(v) < 0) v = "inicio";
+    vistas.forEach(function(id){ $(id).classList.toggle("activa", id === v); });
+    window.scrollTo(0,0);
+  }
+  window.addEventListener("hashchange", mostrar);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-volver]"), function(b){ b.onclick = function(){ location.hash = "#inicio"; }; });
+
+  /* --- Portada --- */
+  if (CONFIG.fotoPortada){ var f=$("fondo"); f.classList.add("foto"); f.style.backgroundImage = "url('" + CONFIG.fotoPortada + "')"; }
+  $("rFb").href = CONFIG.facebook; $("rIg").href = CONFIG.instagram;
+  if (CONFIG.tiktok){ $("rTk").href = CONFIG.tiktok; $("rTk").classList.remove("oculto"); }
+  function pintarLocal(){
+    var l = L();
+    $("pieLocal").textContent = "Local " + l.nombre;
+    var wa = $("rWa");
+    if (waDe(l)){ wa.href = "https://wa.me/" + waDe(l) + "?text=" + encodeURIComponent("Hola Chifa Cristal " + l.nombre + ", quiero hacer un pedido."); wa.classList.remove("oculto"); }
+    else wa.classList.add("oculto");
+    $("oGoogle").href = l.resena || mapsDe(l);
+    var tieneWa = !!waDe(l);
+    pintarReserva();
+    $("oAyuda").textContent = tieneWa ? "Se abrirá WhatsApp con tu mensaje listo; tú decides si lo envías." : "Este local aún no recibe mensajes por WhatsApp.";
+    $("formOpinion").style.display = tieneWa ? "" : "none";
+  }
+  var localReserva = local;
+  function pintarReserva(){
+    var r = CONFIG.locales[localReserva];
+    $("rLocal").value = localReserva;
+    $("rEnviar").querySelector("svg").style.display = waDe(r) ? "" : "none";
+    $("rEnviar").querySelector("span").textContent = waDe(r) ? "Enviar solicitud por WhatsApp" : (r.telefono ? "Llamar para reservar · " + fmtTel(r.telefono) : "Local sin número confirmado");
+  }
+  /* --- Carta --- */
+  var cats = $("categorias"), lista = $("lista");
+  function boton(id, nombre){
+    var b = document.createElement("button"); b.className = "cat"; b.type = "button"; b.textContent = nombre; b.dataset.id = id;
+    b.onclick = function(){
+      $("buscar").value = ""; pintar("");
+      if (id === "todos") window.scrollTo({top:0,behavior:"smooth"});
+      else { var s = $("s-" + id); if (s) s.scrollIntoView({behavior:"smooth"}); }
+      marcar(id);
+    };
+    cats.appendChild(b);
+  }
+  boton("todos","Todos");
+  if (Object.keys(FOTOS).length) boton("estrella", Object.keys(FOTOS).length === 1 ? "Plato estrella" : "Platos estrella");
+  CARTA.forEach(function(c){ boton(c.id, c.nombre); });
+  function marcar(id){
+    Array.prototype.forEach.call(cats.querySelectorAll(".cat"), function(b){
+      var on = b.dataset.id === id; b.classList.toggle("on", on);
+      if (on && cats.scrollWidth > cats.clientWidth) cats.scrollTo({left: b.offsetLeft - (cats.clientWidth - b.clientWidth)/2, behavior:"smooth"});
+    });
+  }
+  function etiquetas(nombre){
+    var t = "";
+    if (/picante/i.test(nombre)) t += '<span class="etq pic">Picante</span>';
+    return t;
+  }
+  function limpiar(nombre){ return nombre.replace(/\s*\((picante)\)/i,""); }
+  function precioTxt(c, it){
+    var n = c.cols.length, partes = [];
+    for (var i=0;i<n;i++){
+      var v = it[1+i]; if (v === "") continue;
+      var val = (v === null || v === undefined) ? "Consultar" : "S/ " + v;
+      partes.push(n > 1 ? "<i>" + c.cols[i] + "</i> " + val : val);
+    }
+    return partes.join('<span class="sep">|</span>');
+  }
+  function slug(t){ return norm(t).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); }
+  function estrellas(){
+    var h = '<section class="seccion" id="s-estrella"><h4>Plato estrella</h4><div class="estrellas' + (Object.keys(FOTOS).length === 1 ? ' uno' : '') + '">';
+    CARTA.forEach(function(c){ c.items.forEach(function(it){
+      var src = FOTOS[it[0]]; if (!src) return;
+      var p = precioTxt(c, it);
+      h += '<a class="estrella" href="#carta" data-ir="p-' + slug(it[0]) + '"><img src="' + src + '" alt="' + esc(limpiar(it[0])) + '" loading="lazy">'
+         + '<div class="txt"><b>' + esc(limpiar(it[0]).replace(/^[CM]\d+ – /,"")) + '</b><span>' + p + '</span></div></a>';
+    }); });
+    return h + '</div></section>';
+  }
+  function pintar(filtro){
+    var f = norm(filtro.trim()), html = f ? "" : estrellas();
+    CARTA.forEach(function(c){
+      var n = c.cols.length;
+      var items = c.items.filter(function(it){
+        var desc = it.length > 1+n ? it[1+n] : "";
+        return !f || norm(it[0]).indexOf(f) > -1 || norm(desc).indexOf(f) > -1 || norm(c.nombre).indexOf(f) > -1;
+      });
+      if (!items.length) return;
+      html += '<section class="seccion" id="s-' + c.id + '"><h4>' + esc(c.nombre) + '</h4>';
+      if (c.nota) html += '<p class="nota">' + esc(c.nota) + '</p>';
+      html += '<div class="platos">';
+      items.forEach(function(it){
+        var desc = it.length > 1+n ? it[1+n] : "";
+        var foto = FOTOS[it[0]];
+        html += '<div class="plato' + (foto ? ' confoto" id="p-' + slug(it[0]) : '') + '"><div><b>' + esc(limpiar(it[0])) + etiquetas(it[0]) + (c.id === "veg" ? '<span class="etq veg">Vegetariano</span>' : '') + '</b>'
+             + (desc ? '<p>' + esc(desc) + '</p>' : '')
+             + '<div class="precio">' + precioTxt(c, it) + '</div></div>'
+             + (foto ? '<img src="' + foto + '" alt="" loading="lazy">' : '') + '</div>';
+      });
+      html += '</div>';
+      if (c.legal) html += '<p class="legal">Tomar bebidas alcohólicas en exceso es dañino.</p>';
+      html += '</section>';
+    });
+    lista.innerHTML = html || '<p class="vacio">No encontramos ese plato. Prueba con otra palabra.</p>';
+    Array.prototype.forEach.call(lista.querySelectorAll("[data-ir]"), function(a){
+      a.onclick = function(e){ e.preventDefault(); var t = $(a.dataset.ir); if (t){ t.scrollIntoView({behavior:"smooth", block:"center"}); t.classList.add("brillo"); setTimeout(function(){ t.classList.remove("brillo"); }, 1600); } };
+    });
+    observar();
+  }
+  var obs = "IntersectionObserver" in window ? new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting) marcar(e.target.id.slice(2)); });
+  },{rootMargin:"-130px 0px -65% 0px"}) : null;
+  function observar(){ if (!obs) return; obs.disconnect(); Array.prototype.forEach.call(document.querySelectorAll(".seccion"), function(s){ obs.observe(s); }); }
+  $("buscar").addEventListener("input", function(e){ pintar(e.target.value); });
+  pintar(""); marcar("todos");
+
+  /* --- Reservas --- */
+  Object.keys(CONFIG.locales).forEach(function(k){ var o=document.createElement("option"); o.value=k; o.textContent=CONFIG.locales[k].nombre; $("rLocal").appendChild(o); });
+  for (var p=1;p<=20;p++){ var o=document.createElement("option"); o.textContent = p + (p===1?" persona":" personas"); o.value=p; if(p===2) o.selected=true; $("rPers").appendChild(o); }
+  var hoy = new Date(); var iso = new Date(hoy.getTime() - hoy.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  $("rFecha").min = iso; $("rFecha").value = iso;
+  $("rLocal").onchange = function(){ localReserva = this.value; pintarReserva(); };
+  $("formReserva").onsubmit = function(e){
+    e.preventDefault();
+    var l = CONFIG.locales[localReserva];
+    if (!waDe(l)){ if (l.telefono) location.href = "tel:+51" + l.telefono; return; }
+    var d = $("rFecha").value.split("-");
+    var msg = "Hola Chifa Cristal " + l.nombre + ", quiero reservar una mesa:\n"
+      + "• Nombre: " + $("rNombre").value + "\n"
+      + "• Fecha: " + d[2] + "/" + d[1] + "/" + d[0] + "\n"
+      + "• Hora: " + $("rHora").value + "\n"
+      + "• Personas: " + $("rPers").value + "\n"
+      + "• Ocasión: " + $("rOcasion").value
+      + ($("rComent").value.trim() ? "\n• Comentarios: " + $("rComent").value.trim() : "");
+    window.open("https://wa.me/" + waDe(l) + "?text=" + encodeURIComponent(msg), "_blank");
+  };
+
+  /* --- Opinión privada --- */
+  var calif = "";
+  Array.prototype.forEach.call(document.querySelectorAll(".cara"), function(b){
+    b.onclick = function(){
+      calif = b.dataset.v;
+      Array.prototype.forEach.call(document.querySelectorAll(".cara"), function(x){ var on = x===b; x.classList.toggle("on", on); x.setAttribute("aria-checked", on); });
+    };
+  });
+  $("formOpinion").onsubmit = function(e){
+    e.preventDefault();
+    var l = L(); if (!waDe(l)) return;
+    if (!calif && !$("oComent").value.trim()){ $("oAyuda").textContent = "Elige una carita o escribe un comentario."; return; }
+    var msg = "Opinión para Chifa Cristal " + l.nombre + (mesa ? " (mesa " + mesa + ")" : "") + ":\n"
+      + (calif ? "• Atención: " + calif + "\n" : "")
+      + ($("oComent").value.trim() ? "• Comentario: " + $("oComent").value.trim() : "");
+    window.open("https://wa.me/" + waDe(l) + "?text=" + encodeURIComponent(msg), "_blank");
+  };
+
+  pintarLocal();
+  mostrar();
+})();
+</script>
+</body>
+</html>

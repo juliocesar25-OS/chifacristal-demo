@@ -1,0 +1,33 @@
+# Redirecciones de tus etiquetas NFC y QR
+# Formato: origen  destino  codigo   (usa siempre 302 para poder cambiar el destino)
+# Para cambiar a donde apunta una etiqueta, edita SOLO el destino y vuelve a subir el sitio.
+
+# --- CHIFA CRISTAL ---
+/cc                /chifacristal/                       302
+# Codigo general por local (QR de entrada, volantes, bolsas de delivery)
+/r/cc-jm        /chifacristal/?local=jesusmaria  302
+/r/cc-mf        /chifacristal/?local=miraflores  302
+/r/cc-ch        /chifacristal/?local=chorrillos  302
+/r/cc-sa        /chifacristal/?local=salamanca   302
+/r/cc-sc        /chifacristal/?local=santaclara  302
+# Etiquetas de mesa del local piloto (Chorrillos). Duplica el bloque para otros locales.
+/r/cc-ch-01       /chifacristal/?local=chorrillos&m=01  302
+/r/cc-ch-02       /chifacristal/?local=chorrillos&m=02  302
+/r/cc-ch-03       /chifacristal/?local=chorrillos&m=03  302
+/r/cc-ch-04       /chifacristal/?local=chorrillos&m=04  302
+/r/cc-ch-05       /chifacristal/?local=chorrillos&m=05  302
+/r/cc-ch-06       /chifacristal/?local=chorrillos&m=06  302
+/r/cc-ch-07       /chifacristal/?local=chorrillos&m=07  302
+/r/cc-ch-08       /chifacristal/?local=chorrillos&m=08  302
+/r/cc-ch-09       /chifacristal/?local=chorrillos&m=09  302
+/r/cc-ch-10       /chifacristal/?local=chorrillos&m=10  302
+/r/cc-ch-11       /chifacristal/?local=chorrillos&m=11  302
+/r/cc-ch-12       /chifacristal/?local=chorrillos&m=12  302
+/r/cc-ch-13       /chifacristal/?local=chorrillos&m=13  302
+/r/cc-ch-14       /chifacristal/?local=chorrillos&m=14  302
+/r/cc-ch-15       /chifacristal/?local=chorrillos&m=15  302
+/r/cc-ch-16       /chifacristal/?local=chorrillos&m=16  302
+/r/cc-ch-17       /chifacristal/?local=chorrillos&m=17  302
+/r/cc-ch-18       /chifacristal/?local=chorrillos&m=18  302
+/r/cc-ch-19       /chifacristal/?local=chorrillos&m=19  302
+/r/cc-ch-20       /chifacristal/?local=chorrillos&m=20  302
